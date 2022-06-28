@@ -13,8 +13,9 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream =>
   
   myPeer.on('call', call => {
     call.answer(stream);
-    call.on('stream', userVideoStream => {
-      addVideoStream(video, userVideoStream);
+    const video = document.createElement('video');
+    call.on('stream', userResVideoStream => {
+      addVideoStream(video, userResVideoStream);
     });
   });
 
@@ -22,7 +23,9 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream =>
     connectToNewUser(userId, stream);
   });
 });
+
 myPeer.on('open', id => {
+  console.log('My peer ID is: ', id);
   socket.emit('join-room', ROOM_ID, id);
 });
 
